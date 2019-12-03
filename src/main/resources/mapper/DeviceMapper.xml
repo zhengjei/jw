@@ -12,24 +12,32 @@
                 userAgent,
             </if>
 
-            <if test="name != null and name != ''">
-                `name`,
+            <if test="system != null and system != ''">
+                `system`,
+            </if>
+
+            <if test="device != null and device != ''">
+                `device`,
+            </if>
+
+            <if test="Browser != null and Browser != ''">
+                Browser,
             </if>
 
             <if test="type != null and type != ''">
                 `type`,
             </if>
 
-            <if test="ip != null and ip != ''">
-                ip,
+            <if test="cip != null and cip != ''">
+                cip,
             </if>
 
-            <if test="region != null and region != ''">
-                region,
+            <if test="cid != null and cid != ''">
+                cid,
             </if>
 
-            <if test="visits != null and visits != ''">
-                visits,
+            <if test="cname != null and cname != ''">
+                cname,
             </if>
             `time`,
         </trim>
@@ -46,58 +54,102 @@
                 #{userAgent},
             </if>
 
-            <if test="name != null and name != ''">
-                #{name},
+            <if test="system != null and system != ''">
+                #{system},
+            </if>
+
+            <if test="device != null and device != ''">
+                #{device},
+            </if>
+
+            <if test="Browser != null and Browser != ''">
+                #{Browser},
             </if>
 
             <if test="type != null and type != ''">
                 #{type},
             </if>
 
-            <if test="ip != null and ip != ''">
-                #{ip},
+            <if test="cip != null and cip != ''">
+                #{cip},
             </if>
 
-            <if test="region != null and region != ''">
-                #{region},
+            <if test="cid != null and cid != ''">
+                #{cid},
             </if>
 
-            <if test="visits != null and visits != ''">
-                #{id},
+            <if test="cname != null and cname != ''">
+                #{cname},
             </if>
             now(),
         </trim>
     </sql>
 
-    <insert id="DeviceEntity" parameterType="com.zj.system.entity.DeviceEntity">
+    <insert id="insertDeviceEntity" parameterType="com.zj.system.entity.DeviceEntity">
         insert into device(<include refid="key"/>) values(<include refid="value"/>);
     </insert>
 
     <resultMap id="selectDeviceEntityListMap" type="com.zj.system.entity.DeviceEntity">
         <id column="id" property="id"/>
         <result column="userAgent" property="userAgent"/>
-        <result column="name" property="name"/>
+        <result column="system" property="system"/>
+        <result column="device" property="device"/>
+        <result column="Browser" property="Browser"/>
         <result column="type" property="type"/>
-        <result column="ip" property="ip"/>
-        <result column="region" property="region"/>
-        <result column="visits" property="visits"/>
+        <result column="cip" property="cip"/>
+        <result column="cid" property="cid"/>
+        <result column="cname" property="cname"/>
         <result column="time" property="time"/>
     </resultMap>
 
-    <select id="selectDeviceEntityList"
+    <select id="selectDeviceList"
             resultMap="selectDeviceEntityListMap">
         select d.id,
         d.userAgent,
-        d.name,
+        d.system,
+        d.device,
+        d.Browser,
         d.type,
-        d.ip,
-        d.region,
-        d.visits,
+        d.cip,
+        d.cid,
+        d.cname,
         d.time
         from device as d
         <where>
             <if test="id != null and id != ''">
-                c.id = #{id}
+                d.id = #{id}
+            </if>
+
+            <if test="userAgent != null and userAgent != ''">
+                d.userAgent = #{userAgent}
+            </if>
+
+            <if test="system != null and system != ''">
+                d.system = #{system}
+            </if>
+
+            <if test="device != null and device != ''">
+                d.device = #{device}
+            </if>
+
+            <if test="Browser != null and Browser != ''">
+                d.Browser = #{Browser}
+            </if>
+
+            <if test="type != null and type != ''">
+                d.type = #{type}
+            </if>
+
+            <if test="cip != null and cip != ''">
+                d.cip = #{cip}
+            </if>
+
+            <if test="cid != null and cid != ''">
+                d.cid = #{cid}
+            </if>
+
+            <if test="cname != null and cname != ''">
+                d.cname = #{cname}
             </if>
         </where>
     </select>

@@ -1,22 +1,23 @@
 package com.zj.jw.controller;
 
 
+import com.zj.system.entity.ApiEntity;
+import com.zj.system.entity.DeviceEntity;
 import com.zj.system.entity.User;
+import com.zj.system.model.service.DeviceServise;
 import com.zj.system.model.service.UserServise;
-import com.zj.system.util.DeviceUtils;
-import nl.bitwalker.useragentutils.Browser;
-import nl.bitwalker.useragentutils.OperatingSystem;
-import nl.bitwalker.useragentutils.UserAgent;
+import com.zj.system.util.UserAgentUtils;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mobile.device.Device;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.List;
 /**
  * @author: Matthew
@@ -28,45 +29,41 @@ import java.util.List;
 public class UserController {
 
     @Autowired
+    RestTemplate restTemplate;
+
+    @Autowired
     private UserServise userServise;
+
+    @Autowired
+    private DeviceServise deviceServise;
 
     @Autowired
     HttpServletRequest httpServletRequest;
 
-
     @GetMapping("/user")
     @ResponseBody
-    public List<User> getUsers(Device device) {
+    public List<User> getUsers() {
         return userServise.selectList();
     }
 
-
     @GetMapping("/device")
     @ResponseBody
-    public String userAgent() throws UnknownHostException {
+    public List<DeviceEntity> userAgent() {
+        DeviceEntity deviceEntity1 = new DeviceEntity();
         String ua = httpServletRequest.getHeader("User-Agent");
-        boolean device = DeviceUtils.isIOSDevice(httpServletRequest);
-        DeviceUtils.isMobileDevice(httpServletRequest);
-        DeviceUtils.isWeChat(httpServletRequest);
-
-         //转成UserAgent对象
-        UserAgent userAgent = UserAgent.parseUserAgentString(ua);
-//获取浏览器信息
-        Browser browser = userAgent.getBrowser();
-//获取系统信息
-        OperatingSystem os = userAgent.getOperatingSystem();
-//系统名称
-        String system = os.getName();
-//浏览器名称
-        String browserName = browser.getName();
-        System.out.println(system);
-        System.out.println(browserName);
-        // 获取计算机名
-        String name = InetAddress.getLocalHost().getHostName();
-        // 获取IP地址
-        String ip = InetAddress.getLocalHost().getHostAddress();
-        System.out.println("IP地址："+ip);
-
-        return ua;
+        String url="http://pv.sohu.com/cityjson";
+        ResponseEntity<String> results = restTemplate.exchange(url, HttpMethod.GET, null, String.class);
+        String jsonStr = results.getBody();
+        assert jsonStr != null;
+        String str2 = jsonStr.substring(19);
+        str2 = str2.substring(0,str2.length() - 1);
+        JSONObject jsonobject = JSONObject.fromObject(str2);
+        ApiEntity apiEntity= (ApiEntity)JSONObject.toBean(jsonobject,ApiEntity.class);
+        DeviceEntity deviceEntity = UserAgentUtils.UserAgent(ua,apiEntity);
+        deviceServise.insertDeviceEntity(deviceEntity);
+        List<DeviceEntity> deviceEntityList = deviceServise.selectList(deviceEntity1);
+        return deviceEntityList;
     }
+
+
 }

@@ -4,25 +4,23 @@ package com.zj.system.entity;
  * @author : 郑杰
  * @date : 2019/11/13 9:28
  */
-public class DeviceEntity {
+public class DeviceEntity extends ApiEntity{
+
 
     /**userAgent信息*/
     private String userAgent;
 
-    /**设备名称*/
-    private String name;
+    /**操作系统*/
+    private String system;
 
     /**设备类型*/
+    private String device;
+
+    /**浏览器*/
+    private String Browser;
+
+    /**类型*/
     private String type;
-
-    /**设备ip地址*/
-    private String ip;
-
-    /**访问地区*/
-    private String region;
-
-    /**访问次数*/
-    private String visits;
 
     /**访问时间*/
     private String time;
@@ -35,12 +33,12 @@ public class DeviceEntity {
         this.userAgent = userAgent;
     }
 
-    public String getName() {
-        return name;
+    public String getSystem() {
+        return system;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setSystem(String system) {
+        this.system = system;
     }
 
     public String getType() {
@@ -51,12 +49,12 @@ public class DeviceEntity {
         this.type = type;
     }
 
-    public String getIp() {
-        return ip;
+    public String getDevice() {
+        return device;
     }
 
-    public void setIp(String ip) {
-        this.ip = ip;
+    public void setDevice(String device) {
+        this.device = device;
     }
 
     public String getTime() {
@@ -67,31 +65,22 @@ public class DeviceEntity {
         this.time = time;
     }
 
-    public String getVisits() {
-        return visits;
+    public String getBrowser() {
+        return Browser;
     }
 
-    public void setVisits(String visits) {
-        this.visits = visits;
-    }
-
-    public String getRegion() {
-        return region;
-    }
-
-    public void setRegion(String region) {
-        this.region = region;
+    public void setBrowser(String browser) {
+        Browser = browser;
     }
 
     @Override
     public String toString() {
         return "DeviceEntity{" +
                 "userAgent='" + userAgent + '\'' +
-                ", name='" + name + '\'' +
+                ", system='" + system + '\'' +
+                ", device='" + device + '\'' +
+                ", Browser='" + Browser + '\'' +
                 ", type='" + type + '\'' +
-                ", ip='" + ip + '\'' +
-                ", region='" + region + '\'' +
-                ", visits='" + visits + '\'' +
                 ", time='" + time + '\'' +
                 '}';
     }

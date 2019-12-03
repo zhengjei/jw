@@ -1,9 +1,6 @@
 package com.zj.jw.controller;
 
 import com.zj.system.entity.ApiEntity;
-import com.zj.system.entity.DeviceEntity;
-import com.zj.system.model.service.DeviceServise;
-import com.zj.system.util.UserAgentUtils;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
@@ -13,44 +10,27 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
-
-import javax.servlet.http.HttpServletRequest;
-
 /**
+ * 控制器
  * @author 郑杰
- * @date 2019/11/17 12:40
+ * @date 2019/11/27 2:18
  */
 @Controller
-@RequestMapping("/device")
-public class DeviceController {
-
+@RequestMapping("/api")
+public class ApiController {
     @Autowired
-    RestTemplate restTemplate;
-
-    @Autowired
-    private DeviceServise deviceServise;
-
-    @Autowired
-    HttpServletRequest httpServletRequest;
-
-    @GetMapping("/device")
+    private RestTemplate restTemplate;
+    @GetMapping("/GetApi")
     @ResponseBody
-    public String userAgent() {
-        DeviceEntity deviceEntity = new DeviceEntity();
-        DeviceEntity deviceEntity1 = new DeviceEntity();
-        String ua = httpServletRequest.getHeader("User-Agent");
+    public String getJson(){
         String url="http://pv.sohu.com/cityjson";
         ResponseEntity<String> results = restTemplate.exchange(url, HttpMethod.GET, null, String.class);
         String jsonStr = results.getBody();
-        assert jsonStr != null;
         String str2 = jsonStr.substring(19);
         str2 = str2.substring(0,str2.length() - 1);
         JSONObject jsonobject = JSONObject.fromObject(str2);
         ApiEntity apiEntity= (ApiEntity)JSONObject.toBean(jsonobject,ApiEntity.class);
-        deviceEntity = UserAgentUtils.UserAgent(ua,apiEntity);
-        deviceServise.insertDeviceEntity(deviceEntity);
-        return ua;
+        System.out.println(apiEntity);
+        return str2;
     }
-
-
 }

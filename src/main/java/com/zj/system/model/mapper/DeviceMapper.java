@@ -18,13 +18,13 @@ public interface DeviceMapper {
      * 直接获取所有的有效数据
      * @return list
      */
-    List<DeviceEntity> selectDeviceList();
+    List<DeviceEntity> selectDeviceList(DeviceEntity deviceEntity);
 
     /**
      * huanq
      * @return DeviceEntity
-     */
     DeviceEntity selectDevice(String ip);
+     */
 
     /**
      *插入已修课程信息

@@ -16,19 +16,19 @@ public class DeviceServise {
      *
      * @return list
      */
-    public List<DeviceEntity> selectList() {
-        return deviceMapper.selectDeviceList();
+    public List<DeviceEntity> selectList(DeviceEntity deviceEntity) {
+        return deviceMapper.selectDeviceList(deviceEntity);
     }
 
     /**
      * 直接获取所有的数据
      * @param ip
      * @return DeviceEntity
-     */
+
     public DeviceEntity selectDeviceEntity(String ip) {
         return deviceMapper.selectDevice(ip);
     }
-
+    */
     /**
      * 插入数据
      * @param deviceEntity
