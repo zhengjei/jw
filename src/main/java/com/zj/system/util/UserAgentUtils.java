@@ -40,13 +40,13 @@ public class UserAgentUtils {
             deviceEntity.setCip(apiEntity.getCip());
             deviceEntity.setCname(apiEntity.getCname());
            if(str.contains("Android")) {
-                deviceEntity.setDevice("Android移动客户端");
+                deviceEntity.setDevice("Android");
             } else if(str.contains("iPhone")) {
-                deviceEntity.setDevice("iPhone移动客户端");
+                deviceEntity.setDevice("iPhone");
             }  else if(str.contains("iPad")) {
-                deviceEntity.setDevice("iPad客户端");
+                deviceEntity.setDevice("iPad");
             }  else if(str.contains("Windows")){
-                deviceEntity.setDevice("Windows客户端");
+                deviceEntity.setDevice("Windows");
             }
         } catch (IOException e) {
             e.printStackTrace();

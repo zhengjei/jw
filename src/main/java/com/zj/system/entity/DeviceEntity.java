@@ -17,7 +17,7 @@ public class DeviceEntity extends ApiEntity{
     private String device;
 
     /**浏览器*/
-    private String Browser;
+    private String browser;
 
     /**类型*/
     private String type;
@@ -66,11 +66,11 @@ public class DeviceEntity extends ApiEntity{
     }
 
     public String getBrowser() {
-        return Browser;
+        return browser;
     }
 
     public void setBrowser(String browser) {
-        Browser = browser;
+        this.browser = browser;
     }
 
     @Override
@@ -79,7 +79,7 @@ public class DeviceEntity extends ApiEntity{
                 "userAgent='" + userAgent + '\'' +
                 ", system='" + system + '\'' +
                 ", device='" + device + '\'' +
-                ", Browser='" + Browser + '\'' +
+                ", browser='" + browser + '\'' +
                 ", type='" + type + '\'' +
                 ", time='" + time + '\'' +
                 '}';

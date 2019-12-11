@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>table模块快速使用</title>
+    <link rel="stylesheet" href="/layui/css/layui.css" media="all">
+    <script src="echarts.min.js"></script>
+    <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts-en.common.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
+</head>
+<body>
+
+
+<div class="layui-tab">
+    <ul class="layui-tab-title">
+        <li class="layui-this">访问信息</li>
+        <li>UA列表</li>
+        <li>我的信息</li>
+        <li>设备占比</li>
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show"><table id="deviceList" lay-filter="deviceList"></table></div>
+        <div class="layui-tab-item"><table id="userAgent" lay-filter="userAgent"></table></div>
+        <div class="layui-tab-item"><table class="layui-table">
+            <colgroup>
+                <col width="150">
+                <col width="200">
+                <col>
+            </colgroup>
+            <thead>
+            <tr>
+                <th>id</th>
+                <th th:text="${deviceEntity.id}">签名</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr>
+                <td>userAgent信息</td>
+                <td th:text="${deviceEntity.userAgent}">人生就像是一场修行</td>
+            </tr>
+
+            <tr>
+                <td>操作系统</td>
+                <td th:text="${deviceEntity.system}">于千万人之中遇见你所遇见的人，于千万年之中，时间的无涯的荒野里…</td>
+            </tr>
+
+            <tr>
+                <td>设备类型</td>
+                <td th:text="${deviceEntity.device}">于千万人之中遇见你所遇见的人，于千万年之中，时间的无涯的荒野里…</td>
+            </tr>
+
+            <tr>
+                <td>浏览器</td>
+                <td th:text="${deviceEntity.browser}">于千万人之中遇见你所遇见的人，于千万年之中，时间的无涯的荒野里…</td>
+            </tr>
+
+            <tr>
+                <td>类型</td>
+                <td th:text="${deviceEntity.type}">于千万人之中遇见你所遇见的人，于千万年之中，时间的无涯的荒野里…</td>
+            </tr>
+
+            <tr>
+                <td>ip</td>
+                <td th:text="${deviceEntity.cip}">于千万人之中遇见你所遇见的人，于千万年之中，时间的无涯的荒野里…</td>
+            </tr>
+
+            <tr>
+                <td>地区代码</td>
+                <td th:text="${deviceEntity.cid}">于千万人之中遇见你所遇见的人，于千万年之中，时间的无涯的荒野里…</td>
+            </tr>
+
+            <tr>
+                <td>地区名称</td>
+                <td th:text="${deviceEntity.cname}">于千万人之中遇见你所遇见的人，于千万年之中，时间的无涯的荒野里…</td>
+            </tr>
+
+            <tr>
+                <td>访问时间</td>
+                <td th:text="${deviceEntity.time}">于千万人之中遇见你所遇见的人，于千万年之中，时间的无涯的荒野里…</td>
+            </tr>
+            </tbody>
+        </table></div>
+        <div class="layui-tab-item"><div id="main" style="width: 600px;height:400px;"></div></div>
+        </div>
+
+    </div>
+</div>
+
+<script src="/layui/layui.js"></script>
+<script  type="text/javascript">
+
+    layui.use('element', function(){
+        var element = layui.element;
+    });
+
+    layui.use('table', function(){
+        var table = layui.table;
+
+        //第一个实例
+        table.render({
+            elem: '#deviceList'
+            ,url:'/user/deviceList'//数据接口
+            ,page: true
+            ,cols: [
+                [ //表头
+
+               //{field: 'userAgent', title: 'userAgent', align: "center"},
+                    //{field: 'id', title: 'id', align: "center"},
+                    {field: 'system', title: '操作系统', align: "center"},
+                    {field: 'device', title: '设备类型', align: "center"},
+                    {field: 'browser', title: '浏览器', align: "center"},
+                    {field: 'type', title: '类型', align: "center"},
+                    {field: 'cip', title: 'ip', align: "center"},
+                    {field: 'cid', title: '地区代码', align: "center"},
+                    {field: 'cname', title: '地区名称', align: "center"},
+                    {field: 'time', title: '访问时间', align: "center"},
+            ]
+            ]
+        });
+
+    });
+
+    layui.use('table', function(){
+        var table = layui.table;
+
+        //第一个实例
+        table.render({
+            elem: '#userAgent'
+            ,url:'/user/deviceList'//数据接口
+            ,page: true
+            ,cols: [
+                [ //表头
+
+                    {field: 'userAgent', title: 'userAgent', align: "center"},
+
+                ]
+            ]
+        });
+
+    });
+
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+    // 指定图表的配置项和数据
+    var names=[];
+    var values=[];
+    //数据加载完之前先显示一段简单的loading动画
+    myChart.showLoading();
+    $.ajax({
+        type : "post",
+        async : true,            //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+        url : "/user/visitList",    //请求发送到dataActiont处
+        data : {},
+        dataType : "json",        //返回数据形式为json
+        success : function(result) {
+            //请求成功时执行该函数内容，result即为服务器返回的json对象
+            if (result) {
+                var servicedata=[];
+                for(var i=0;i<result.length;i++){
+                    var obj=new Object();
+                    obj.name=result[i].name;
+                    obj.value=result[i].number;
+                    servicedata[i]=obj;
+                }
+                myChart.hideLoading();    //隐藏加载动画
+                myChart.setOption(
+                    {
+                        title: {
+                            text: '设备占比',
+                            x: 'center'
+                        },
+                        tooltip: {
+                            trigger: 'item',
+                            formatter: "{a} <br/>{b} : {c} ({d}%)"
+                        },
+                        legend: {
+                            orient: 'vertical',
+                            left: 'left',
+                            data: servicedata
+                        },
+                        series: [
+                            {
+                                name: '访问次数',
+                                type: 'pie',
+                                radius: '55%',
+                                center: ['50%', '60%'],
+                                data: servicedata,
+                                itemStyle: {
+                                    emphasis: {
+                                        shadowBlur: 10,
+                                        shadowOffsetX: 0,
+                                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                );
+            }
+        },
+        error : function(errorMsg) {
+            //请求失败时执行该函数
+            alert("图表请求数据失败!");
+            myChart.hideLoading();
+        }
+    });//end ajax
+
+
+</script>
+</body>
+</html>

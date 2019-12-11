@@ -20,8 +20,8 @@
                 `device`,
             </if>
 
-            <if test="Browser != null and Browser != ''">
-                Browser,
+            <if test="browser != null and browser != ''">
+                browser,
             </if>
 
             <if test="type != null and type != ''">
@@ -62,8 +62,8 @@
                 #{device},
             </if>
 
-            <if test="Browser != null and Browser != ''">
-                #{Browser},
+            <if test="browser != null and browser != ''">
+                #{browser},
             </if>
 
             <if test="type != null and type != ''">
@@ -94,7 +94,7 @@
         <result column="userAgent" property="userAgent"/>
         <result column="system" property="system"/>
         <result column="device" property="device"/>
-        <result column="Browser" property="Browser"/>
+        <result column="browser" property="browser"/>
         <result column="type" property="type"/>
         <result column="cip" property="cip"/>
         <result column="cid" property="cid"/>
@@ -108,7 +108,7 @@
         d.userAgent,
         d.system,
         d.device,
-        d.Browser,
+        d.browser,
         d.type,
         d.cip,
         d.cid,
@@ -132,8 +132,8 @@
                 d.device = #{device}
             </if>
 
-            <if test="Browser != null and Browser != ''">
-                d.Browser = #{Browser}
+            <if test="browser != null and browser != ''">
+                d.browser = #{browser}
             </if>
 
             <if test="type != null and type != ''">
@@ -151,6 +151,24 @@
             <if test="cname != null and cname != ''">
                 d.cname = #{cname}
             </if>
+        </where>
+    </select>
+
+    <select id="selectDevice"
+            resultType="com.zj.system.entity.DeviceEntity">
+        select d.id,
+        d.userAgent,
+        d.system,
+        d.device,
+        d.browser,
+        d.type,
+        d.cip,
+        d.cid,
+        d.cname,
+        d.time
+        from device as d
+        <where>
+                d.id = #{id}
         </where>
     </select>
 </mapper>

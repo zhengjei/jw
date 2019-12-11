@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zj.system.model.mapper.VisitMapper">
+
+    <update id="updateVisitEntity">
+        update visit set
+        number=number+1
+        <where>
+            name = #{name}
+        </where>
+    </update>
+
+    <resultMap id="selectVisitEntityListMap" type="com.zj.system.entity.VisitEntity">
+        <result column="name" property="name"/>
+        <result column="number" property="number"/>
+    </resultMap>
+
+    <select id="selectVisitEntityList"
+            resultMap="selectVisitEntityListMap">
+        select v.name,
+        v.number
+        from visit as v
+        <where>
+            <if test="name != null and name != ''">
+                v.name = #{name}
+            </if>
+
+            <if test="number != null and number != ''">
+                v.number = #{number}
+            </if>
+        </where>
+    </select>
+</mapper>

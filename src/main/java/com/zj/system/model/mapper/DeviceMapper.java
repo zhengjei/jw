@@ -21,6 +21,12 @@ public interface DeviceMapper {
     List<DeviceEntity> selectDeviceList(DeviceEntity deviceEntity);
 
     /**
+     * 直接获取所有的有效数据
+     * @return DeviceEntity
+     */
+    DeviceEntity selectDevice(String id);
+
+    /**
      * huanq
      * @return DeviceEntity
     DeviceEntity selectDevice(String ip);
