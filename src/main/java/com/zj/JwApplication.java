@@ -6,8 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 /**
- * @author matthew
- * @date 2019.03.17
+ * 启动
  */
 @SpringBootApplication
 @MapperScan(basePackages = {"com.zj.system.model.mapper"})

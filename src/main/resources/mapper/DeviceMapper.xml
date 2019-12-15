@@ -36,6 +36,10 @@
                 cid,
             </if>
 
+            <if test="province != null and province != ''">
+                province,
+            </if>
+
             <if test="cname != null and cname != ''">
                 cname,
             </if>
@@ -78,6 +82,10 @@
                 #{cid},
             </if>
 
+            <if test="province != null and province != ''">
+                #{province},
+            </if>
+
             <if test="cname != null and cname != ''">
                 #{cname},
             </if>
@@ -98,6 +106,7 @@
         <result column="type" property="type"/>
         <result column="cip" property="cip"/>
         <result column="cid" property="cid"/>
+        <result column="province" property="province"/>
         <result column="cname" property="cname"/>
         <result column="time" property="time"/>
     </resultMap>
@@ -112,9 +121,11 @@
         d.type,
         d.cip,
         d.cid,
+        d.province,
         d.cname,
         d.time
         from device as d
+        order by d.time desc
         <where>
             <if test="id != null and id != ''">
                 d.id = #{id}
@@ -148,6 +159,10 @@
                 d.cid = #{cid}
             </if>
 
+            <if test="province != null and province != ''">
+                d.province = #{province}
+            </if>
+
             <if test="cname != null and cname != ''">
                 d.cname = #{cname}
             </if>
@@ -164,6 +179,7 @@
         d.type,
         d.cip,
         d.cid,
+        d.province,
         d.cname,
         d.time
         from device as d

@@ -2,12 +2,12 @@ package com.zj.system.util;
 
 import com.zj.system.entity.ApiEntity;
 import com.zj.system.entity.DeviceEntity;
-import com.zj.system.model.service.DeviceServise;
 import cz.mallat.uasparser.OnlineUpdater;
 import cz.mallat.uasparser.UASparser;
 import cz.mallat.uasparser.UserAgentInfo;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 @Component
 public class UserAgentUtils {
@@ -28,7 +28,6 @@ public class UserAgentUtils {
     public static DeviceEntity UserAgent(String str,ApiEntity apiEntity)
     {
         DeviceEntity deviceEntity = new DeviceEntity();
-        DeviceServise deviceServise = new DeviceServise();
         try {
             UserAgentInfo userAgentInfo = UserAgentUtils.uasParser.parse(str);
             deviceEntity.setId("1");
@@ -38,6 +37,7 @@ public class UserAgentUtils {
             deviceEntity.setType(userAgentInfo.getType());
             deviceEntity.setCid(apiEntity.getCid());
             deviceEntity.setCip(apiEntity.getCip());
+            deviceEntity.setProvince(apiEntity.getProvince());
             deviceEntity.setCname(apiEntity.getCname());
            if(str.contains("Android")) {
                 deviceEntity.setDevice("Android");
@@ -52,5 +52,23 @@ public class UserAgentUtils {
             e.printStackTrace();
         }
         return deviceEntity;
+    }
+
+    public static String getIpAddress(HttpServletRequest request) {
+        String ip = request.getHeader("x-forwarded-for");
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+        if (ip.contains(",")) {
+            return ip.split(",")[0];
+        } else {
+            return ip;
+        }
     }
 }

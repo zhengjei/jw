@@ -1,8 +1,5 @@
 package com.zj.system.entity;
-/**
- * Created by Song on 2017/2/15.
- * Model 用户
- */
+
 public class User {
 
     private String id;

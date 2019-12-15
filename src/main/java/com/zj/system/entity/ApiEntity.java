@@ -13,7 +13,8 @@ public class ApiEntity {
 
     /**地区代码*/
     private String cid;
-
+    /**省名称*/
+    private String province;
     /**地区名称*/
     private String cname;
 
@@ -49,12 +50,21 @@ public class ApiEntity {
         this.cname = cname;
     }
 
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
     @Override
     public String toString() {
         return "ApiEntity{" +
                 "id='" + id + '\'' +
                 ", cip='" + cip + '\'' +
                 ", cid='" + cid + '\'' +
+                ", province='" + province + '\'' +
                 ", cname='" + cname + '\'' +
                 '}';
     }

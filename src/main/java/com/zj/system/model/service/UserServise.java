@@ -9,11 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.SQLException;
 import java.util.List;
 
-/**
- * @author : Matthew
- * @Date: 2019/3/28 16:58
- * @Description: 服务层模版
- */
+
 @Service("user")
 public class UserServise {
     @Autowired

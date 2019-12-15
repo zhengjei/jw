@@ -9,12 +9,11 @@ import com.zj.system.entity.VisitEntity;
 import com.zj.system.model.service.DeviceServise;
 import com.zj.system.model.service.UserServise;
 import com.zj.system.model.service.VisitServise;
+import com.zj.system.util.GdUtil;
+import com.zj.system.util.GetIpUtils;
 import com.zj.system.util.IdUtil;
 import com.zj.system.util.UserAgentUtils;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +29,7 @@ import java.util.List;
  * @Description:
  */
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/")
 public class UserController extends BaseController  {
     private String prefix = "table";
 
@@ -55,37 +54,23 @@ public class UserController extends BaseController  {
         return userServise.selectList();
     }
 
-    @GetMapping("/device")
-    //@RequestMapping("/device")
-    //@ResponseBody
-    public String userAgent(ModelMap map) {
-
+    @GetMapping("/")
+    public String userAgent(ModelMap map){
         String ua = httpServletRequest.getHeader("User-Agent");
-        String url="http://pv.sohu.com/cityjson";
-        ResponseEntity<String> results = restTemplate.exchange(url, HttpMethod.GET, null, String.class);
-        String jsonStr = results.getBody();
-        assert jsonStr != null;
-        String str2 = jsonStr.substring(19);
-        str2 = str2.substring(0,str2.length() - 1);
-        JSONObject jsonobject = JSONObject.fromObject(str2);
-        ApiEntity apiEntity= (ApiEntity)JSONObject.toBean(jsonobject,ApiEntity.class);
+        String ip = GetIpUtils.getIp(httpServletRequest);
+        ApiEntity apiEntity= GdUtil.getCityCodeByIp(ip);
         DeviceEntity deviceEntity = UserAgentUtils.UserAgent(ua,apiEntity);
         visitServise.updateTest(deviceEntity.getDevice());
         String id = IdUtil.uuid();
         deviceEntity.setId(id);
+        deviceEntity.setCip(ip);
         deviceServise.insertDeviceEntity(deviceEntity);
         DeviceEntity deviceEntity1 = deviceServise.selectDeviceEntity(id);
         map.addAttribute("deviceEntity",deviceEntity1);
-
-
         return prefix + "/table";
+
     }
-    @GetMapping("/a")
-    //@RequestMapping("/device")
-    //@ResponseBody
-    public String a() {
-        return prefix + "/a";
-    }
+
     @RequestMapping("/deviceList")
     @ResponseBody
     public TableDataInfo searchList(DeviceEntity deviceEntity) {
